@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Submt form</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>Submit form</h2>
+            <p class="lead">
+                Serverless submit form implementation for Amazon Lambda
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form 
+                    id="submit-form" 
+                    method="post"
+                    action=""
+                    enctype="application/x-www-form-urlencoded" >
+
+                    <div class="form-group">
+                        <label for="inputFirstName">First name</label>
+                        <input type="text" class="form-control" name="first-name" 
+                            id="inputFirstName" aria-describedby="firstNameHelp"
+                            placeholder="First name">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLastName">Last name</label>
+                        <input type="text" class="form-control" name="last-name" 
+                            id="inputLastName" aria-describedby="lastNameHelp"
+                            placeholder="Last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail">Email address</label>
+                        <input type="email" class="form-control" name="email" 
+                            id="inputEmail" aria-describedby="emailHelp"
+                            placeholder="Enter email">
+                    </div>
+                    <button class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
