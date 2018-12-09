@@ -37,7 +37,7 @@ $ aws iam attach-role-policy --role-name Compound-Test-Role --policy-arn arn:aws
 ### Lambda function
 7. Create Lambda function
 ```bash
-$ zip - ./lambda/* -j | aws lambda create-function --function-name CompoundFormSubmitLambda --runtime nodejs8.10 --role arn:aws:iam::373428958371:role/Compound-Test-Role --handler index.handler --environment Variables="{S3_BUCKET=compound-test-3678,STORAGE_PATH=storage/" --zip-file fileb:///dev/stdin
+$ zip - ./lambda/* -j | aws lambda create-function --function-name CompoundFormSubmitLambda --runtime nodejs8.10 --role arn:aws:iam::373428958371:role/Compound-Test-Role --handler index.handler --environment Variables="{S3_BUCKET=compound-test-3678,STORAGE_PATH=storage/}" --zip-file fileb:///dev/stdin
 ```
 ----
 ### API Gateway configuration
