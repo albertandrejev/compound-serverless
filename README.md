@@ -1,5 +1,7 @@
 # Serverless appication using Amazon services: S3, Lambda, API Gateway and IAM
 
+I decided that the main idea of this task is to show my ability to create serverless applications using Google or Amazon infrastructura. So front-end side will be simpliest as possible. There will no any validation, only Google Invisible Captcha. If I was wrong, just let me know and I will add front-end and back-end validation rules.
+
 In order to deploy the task you should run following commands
 
 ----
