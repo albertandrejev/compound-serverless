@@ -79,7 +79,7 @@ $ aws apigateway create-deployment --rest-api-id <REST API ID> --stage-name prod
 ```
 ----
 ### Static web files
-1.  Copying static html files to S3 bucket. NB! Do not forget to update form action in index.html and set it to https://<REST API ID>.execute-api.eu-central-1.amazonaws.com/prod/form-submit
+1.  Copying static html files to S3 bucket. NB! Do not forget to update form action in index.html and set it to https://&lt;REST API ID&gt;.execute-api.eu-central-1.amazonaws.com/prod/form-submit
 ```bash
 $ aws s3 cp ./public_html s3://compound-test-3678/ --recursive --include "*"
 ```
