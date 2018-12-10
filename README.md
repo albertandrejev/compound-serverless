@@ -2,6 +2,9 @@
 
 I decided that the main idea of this task is to show my ability to create serverless applications using Google or Amazon infrastructura. So front-end side will be simple as possible, only bootstrap and javascript. There will be no any validation, only Google Invisible Captcha. If I was wrong, just let me know and I will add front-end and back-end validation rules.
 
+To try this demo please go to http://compound-test-3678.s3-website.eu-central-1.amazonaws.com/ and submit form. To check stored data you can open http://compound-test-3678.s3-website.eu-central-1.amazonaws.com/storage/&lt;email&gt;.json
+In case if email already exists you will see json message with error that object already exists.
+
 In order to deploy the task you should run following commands
 
 ----
