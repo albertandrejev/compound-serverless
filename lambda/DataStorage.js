@@ -4,10 +4,7 @@ var s3 = new AWS.S3();
 
 class DataStorage {
 
-  constructor(bucketName, storagePath, successCallback, errorCallback) {
-    this._successCallback = successCallback;
-    this._errorCallback = errorCallback;
-
+  constructor(bucketName, storagePath) {
     this._bucketName = bucketName;
     this._storagePath = storagePath;
   }
@@ -43,16 +40,14 @@ class DataStorage {
 
   async add(data, filename) {
     const objExists = await this._checkObjectExists(filename);
-    if (!objExists) {      
-      const objectCreated = await this._createObject(data, filename);
-      this._successCallback({ objectCreated });
-      console.log('File not exists');
-    } else {
-      this._errorCallback(409, { objectExists: true });
+    if (objExists) {
       console.log('File exists');
+      return false;
     }
-  }
 
+    console.log('File not exists');
+    return await this._createObject(data, filename);
+  }
 }
 
 module.exports = DataStorage;

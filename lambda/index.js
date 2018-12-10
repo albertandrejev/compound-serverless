@@ -14,24 +14,39 @@ exports.handler = (event, context, callback) => {
   console.log('User Agent: ', userAgent);
   console.log('Request body decoded: ', JSON.stringify(parsedBody));
 
-  const captchaCheck = new CaptchaCheck(onCaptchaSuccess(event, callback), onError(callback));
-  captchaCheck.check(parsedBody['g-recaptcha-response'], sourceIp);
+  const captchaCheck = new CaptchaCheck();
+
+  const bucketName = process.env.S3_BUCKET;
+  const storagePath = process.env.STORAGE_PATH;
+  const dataStorage = new DataStorage(bucketName, storagePath);
+
+  processRequest(captchaCheck, dataStorage, sourceIp, userAgent, parsedBody, callback);
 };
 
-const onSuccess = (callback) => (content) => {
-  console.log(content);
+async function processRequest(captchaCheck, dataStorage, sourceIp, userAgent, parsedBody, callback) {
+  const checkResult = await captchaCheck.check(parsedBody['g-recaptcha-response'], sourceIp);
+  if (!checkResult) {
+    onError(callback, 403, { captchaError: true });
+    return;
+  }
 
-  var response = {
-    statusCode: 301,
-    headers: {
-      "Location": process.env.SUCCESS_REDIRECT
-    },
-    body: null
-  };
-  callback(null, response);
+  const submittedData = {
+    firstName: parsedBody['first-name'],
+    lastName: parsedBody['last-name'],
+    email: parsedBody['email'],
+    ip: sourceIp,
+    userAgent: userAgent
+  }
+  const storageResult = await dataStorage.add(submittedData, parsedBody['email']);
+  if (!storageResult) {
+    onError(callback, 409, { fileAlreadyExists: true });
+    return;
+  }
+
+  onSuccess(callback);
 }
 
-const onError = (callback) => (statusCode, err) => {
+function onError(callback, statusCode, err) {
   console.log('error: ', JSON.stringify({ error: err }));
   callback(null, {
     statusCode: statusCode,
@@ -42,24 +57,12 @@ const onError = (callback) => (statusCode, err) => {
   });
 }
 
-const onCaptchaSuccess = (event, callback) => (data) => {
-  const sourceIp = event.requestContext.identity.sourceIp;
-  const userAgent = event.requestContext.identity.userAgent;
-  const parsedBody = querystring.parse(event.body);
-
-  const bucketName = process.env.S3_BUCKET;
-  const storagePath = process.env.STORAGE_PATH;
-
-  const dataStorage = new DataStorage(bucketName, storagePath, onSuccess(callback), onError(callback));
-  const submittedData = {
-    firstName: parsedBody['first-name'],
-    lastName: parsedBody['last-name'],
-    email: parsedBody['email'],
-    ip: sourceIp,
-    userAgent: userAgent 
-  }
-  dataStorage.add(submittedData, parsedBody['email']);
-
-  console.log(JSON.stringify(data));
+function onSuccess(callback) {
+  callback(null, {
+    statusCode: 301,
+    body: null,
+    headers: {
+      "Location": process.env.SUCCESS_REDIRECT
+    }    
+  });
 }
-
